@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>초보 사장님을 위한 카페음료 원가 계산기</title>
+    
+    <!-- 🔍 검색엔진 인증용 메타태그 등록 -->
+    <meta name="naver-site-verification" content="38479cf22fc9405218438777943d28e6afdcae8c" />
+    <meta name="google-site-verification" content="Qs73gPV3jveEeLMJUeKWVXUaGHRH4-St3N9_XeAuWUE" />
+
+    <!-- Tailwind CSS CDN (v4) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 아이콘 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ================================================================= */
+        /* 🖋️ 상업용 무료 폰트 '페이퍼로지체(Paperlogy)' 1-9단계 수동 매핑 수칙 */
+        /* ================================================================= */
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-1Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-2ExtraLight.woff2') format('woff2');
+            font-weight: 200;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-3Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-4Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-5Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-6SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-7Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-8ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PaperlogyY';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-9Black.woff2') format('woff2');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        /* 💡 전체 선택자(*) 대신 필수 글자 요소에만 페이퍼로지체를 상속시킵니다. */
+        body, input, select, button, textarea, p, span, div, label, h1, h2, h3, h4, h5, h6 {
+            font-family: 'PaperlogyY', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 💡 FontAwesome 아이콘 서체가 페이퍼로지체에 강제 덮어씌워지지 않도록 격리 보존합니다. */
+        .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands {
+            font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+            font-weight: 900 !important; 
+        }
+
+        /* 브라우저 강제 굵기 상쇄 후 고유 굵기 지정 */
+        strong, b, h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+        }
+
+        /* 크롬 및 사파리 스핀 버튼 숨김 처리로 깔끔한 숫자 패드 입력 유지 */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-[#f7f5f0] text-[#3e2723] min-h-screen pb-28 font-[400] antialiased">
+
+    <!-- 1. 상단 고정 대시보드 (따뜻한 에스프레소 브라운 톤) -->
+    <div class="sticky top-0 bg-[#faf8f5] shadow-sm z-40 border-b border-stone-200">
+        <div class="max-w-md mx-auto px-4 py-2.5">
+            <div class="flex items-center justify-between mb-1.5">
+                <h1 class="text-sm font-[900] text-[#5c4033] flex items-center gap-1.5">
+                    <span class="text-base text-amber-700">☕</span> 초보 사장님 원가 계산기
+                </h1>
+            </div>
+            
+            <!-- 3분할 가로 대시보드 (최종원가 | 목표원가율 | 권장소비자가) -->
+            <div class="grid grid-cols-3 gap-1 bg-[#3e2723] text-stone-100 p-2.5 rounded-lg shadow-md text-center">
+                <div class="border-r border-amber-900/30 pr-1">
+                    <div class="flex items-center justify-center gap-0.5 mb-0.5">
+                        <span class="text-[9px] text-amber-200/70 font-[400]">최종 원가</span>
+                        <button onclick="toggleTooltip(event, 'tip-loss-rate')" class="text-amber-300/60 text-[9px] cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                    <p class="text-sm font-[800] text-[#fcd34d] truncate" id="total-cost-display">0원</p>
+                </div>
+                <div class="border-r border-amber-900/30 px-1">
+                    <div class="flex items-center justify-center gap-0.5 mb-0.5">
+                        <span class="text-[9px] text-amber-200/70 font-[400]">목표 원가율</span>
+                        <button onclick="toggleTooltip(event, 'tip-target-ratio')" class="text-amber-300/60 text-[9px] cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                    <p class="text-sm font-[800] text-[#f59e0b] truncate" id="target-ratio-display">35%</p>
+                </div>
+                <div class="pl-1">
+                    <div class="flex items-center justify-center gap-0.5 mb-0.5">
+                        <span class="text-[9px] text-amber-200/70 font-[400]">권장 소비자가</span>
+                        <button onclick="toggleTooltip(event, 'tip-recommended-price')" class="text-amber-300/60 text-[9px] cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                    <p class="text-sm font-[800] text-[#60a5fa] truncate" id="recommended-price-display">0원</p>
+                </div>
+            </div>
+
+            <!-- 목표 원가율 슬라이더 -->
+            <div class="mt-2 flex items-center gap-2 bg-[#fdfdfc] p-1.5 rounded-md border border-stone-200">
+                <label class="text-[10px] font-[700] text-stone-500 shrink-0">원가율 설정</label>
+                <input type="range" id="target-ratio-slider" min="15" max="65" value="35" class="w-full h-1.5 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-[#5c4033]" oninput="calculateAll()">
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="max-w-md mx-auto p-4 space-y-4">
+
+        <!-- 데이터 관리 및 메뉴명 설정 카드 -->
+        <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
+            <div class="space-y-3">
+                <!-- 1. 메뉴명 입력란 -->
+                <div>
+                    <label class="block text-xs font-[800] text-stone-700 mb-1.5 flex items-center gap-1.5">
+                        🏷️ 메뉴명 설정
+                    </label>
+                    <input type="text" id="drink-name" placeholder="예: 아이스 아메리카노 (16oz)" class="w-full text-xs bg-stone-50 border border-stone-200 rounded-md px-3 py-2 font-[800] text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-800 focus:border-amber-800">
+                </div>
+
+                <!-- 💡 해결책 2: 구글 애드센스 심사 통과를 위해, 도움말 비법서 버튼 링크를 상단 메인 섹션에 우아하게 배치 -->
+                <div class="pt-2 border-t border-dashed border-stone-200">
+                    <button onclick="openAccountingModal()" class="w-full py-2 px-3 bg-[#3e2723] hover:bg-[#4e3629] text-stone-100 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                        <span class="text-[#fcd34d] animate-pulse"><i class="fa-solid fa-lightbulb"></i></span>
+                        <span>필수 세무/회계 비법서 가이드 읽기</span>
+                    </button>
+                </div>
+
+                <!-- 2. 백업 파일 내보내기/불러오기 버튼 패널 -->
+                <div class="pt-2 border-t border-dashed border-stone-200 flex gap-2">
+                    <button onclick="exportData()" class="flex-1 py-1.5 px-3 bg-amber-50 hover:bg-amber-100 text-[#5c4033] border border-amber-200/80 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-file-export"></i> 계산서 내보내기 (.txt)
+                    </button>
+                    <button onclick="triggerImport()" class="flex-1 py-1.5 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-file-import"></i> 계산서 불러오기
+                    </button>
+                    <input type="file" id="import-file-input" class="hidden" accept=".txt" onchange="handleImport(event)">
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. 원재료비 섹션 -->
+        <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-1">
+                    <h2 class="text-sm font-[800] text-stone-900">1. 원재료비 입력 (음료용)</h2>
+                    <button onclick="toggleTooltip(event, 'tip-raw-material')" class="text-stone-400 text-xs cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
+                </div>
+                <button onclick="addMaterialRow()" class="text-[11px] font-[700] bg-[#5c4033] text-white px-2.5 py-1.5 rounded-md hover:bg-[#4a3525] transition cursor-pointer">
+                    <i class="fa-solid fa-plus mr-1"></i> 재료 추가
+                </button>
+            </div>
+
+            <!-- 원재료 동적 컨테이너 -->
+            <div id="material-list" class="space-y-3">
+                <!-- Javascript 동적 로드 영역 -->
+            </div>
+        </section>
+
+        <!-- 2. 부자재비 섹션 -->
+        <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-1">
+                    <h2 class="text-sm font-[800] text-stone-900">2. 부자재비 입력 (테이크아웃 전용)</h2>
+                    <button onclick="toggleTooltip(event, 'tip-subsidiary')" class="text-stone-400 text-xs cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
+                </div>
+                <button onclick="addCustomSubsidiary()" class="text-[11px] font-[700] bg-[#5c4033] text-white px-2.5 py-1.5 rounded-md hover:bg-[#4a3525] transition cursor-pointer">
+                    <i class="fa-solid fa-plus mr-0.5"></i> 부자재 추가
+                </button>
+            </div>
+            
+            <!-- 부자재 1줄 리스트 컨테이너 -->
+            <div id="subsidiary-list" class="space-y-2">
+                <!-- Javascript 동적 로드 영역 -->
+            </div>
+        </section>
+
+        <!-- 3. 로스율 조절 섹션 -->
+        <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center gap-1">
+                    <h2 class="text-sm font-[800] text-stone-900">3. 로스율(Loss) 범위</h2>
+                    <button onclick="toggleTooltip(event, 'tip-loss-rate-desc')" class="text-slate-400 text-xs cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
+                </div>
+                <span class="text-xs font-[700] text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200" id="loss-display">3%</span>
+            </div>
+            <input type="range" id="loss-slider" min="0" max="10" value="3" class="w-full h-1.5 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-[#5c4033]" oninput="calculateAll()">
+        </section>
+
+        <!-- ✉️ 수정 및 피드백 문의처 영역 (로스율 하단 연계) -->
+        <section class="bg-stone-100 p-4 rounded-xl border border-stone-200/60 text-center">
+            <p class="text-[11px] font-[400] text-stone-600 leading-relaxed">
+                원가 계산기 사용 중 기능 수정이나 문의사항이 있으시면<br>
+                아래 이메일로 사장님의 소중한 의견을 편하게 보내주세요!
+            </p>
+            <div class="mt-2.5">
+                <a href="mailto:noraniuswork@gamil.com" class="inline-flex items-center gap-1.5 text-xs font-[800] text-amber-800 hover:text-amber-900 border-b border-amber-800/40 pb-0.5 hover:border-amber-900 transition">
+                    <i class="fa-regular fa-envelope"></i> noraniuswork@gamil.com
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 💡 해결책 1: 하단 고정 바 영역을 구글 애드센스 모바일 광고가 무리 없이 배치될 수 있는 표준 홀더 공간으로 전면 개방 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-[#faf8f5] border-t border-stone-200 h-16 flex items-center justify-center z-50 shadow-md">
+        <!-- 
+          실사용 구글 애드센스 광고 적용 시 아래 태그 영역 주석을 제거하고 광고 코드를 바인딩하세요.
+          <ins class="adsbygoogle"
+               style="display:inline-block;width:320px;height:50px"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="XXXXXXXXXX"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+        <span class="text-[10px] text-stone-400 font-[400] tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-rectangle-ad text-stone-300 text-xs"></i> 구글 애드센스 광고 게재 영역 (표준 모바일 배너 320x50 대응)
+        </span>
+    </div>
+
+    <!-- 모바일 전용 원터치 도움말 모달창 -->
+    <div id="global-tooltip" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-6 z-50 animate-fade-in" onclick="closeTooltip()">
+        <div class="bg-white p-5 rounded-xl max-w-xs w-full shadow-2xl relative" onclick="event.stopPropagation()">
+            <button onclick="closeTooltip()" class="absolute top-3 right-3 text-stone-400 hover:text-stone-600 cursor-pointer text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h4 class="font-[800] text-[#5c4033] mb-2.5 flex items-center gap-1.5 text-xs border-b border-stone-100 pb-1.5">
+                <i class="fa-solid fa-circle-question text-amber-500"></i> 사장님 도움말
+            </h4>
+            <p id="tooltip-text" class="text-[11px] font-[400] text-stone-600 leading-relaxed"></p>
+        </div>
+    </div>
+
+    <!-- 📖 초보 사장님 필수 비법서 고급 탭 모달창 (AdSense 대체 팝업) -->
+    <div id="accounting-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4 z-50 animate-fade-in" onclick="closeAccountingModal()">
+        <div class="bg-white p-5 rounded-2xl max-w-md w-full shadow-2xl relative text-left flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
+            <!-- Close button -->
+            <button onclick="closeAccountingModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 cursor-pointer text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <h3 class="font-[900] text-base text-[#5c4033] mb-3 flex items-center gap-1.5 border-b border-stone-100 pb-2">
+                📖 초보 사장님 필수 비법서
+            </h3>
+
+            <!-- 탭 헤더 버튼 그룹 -->
+            <div class="grid grid-cols-4 gap-1 bg-stone-100 p-1 rounded-lg mb-4 text-[10px] font-[700] text-stone-500">
+                <button onclick="switchTab('tab-tax')" id="btn-tab-tax" class="tab-btn py-1.5 px-0.5 text-center rounded-md bg-white text-[#5c4033] shadow-2xs transition">면세/과세</button>
+                <button onclick="switchTab('tab-density')" id="btn-tab-density" class="tab-btn py-1.5 px-0.5 text-center rounded-md hover:bg-stone-50 transition">부피(ml) 비중</button>
+                <button onclick="switchTab('tab-sga')" id="btn-tab-sga" class="tab-btn py-1.5 px-0.5 text-center rounded-md hover:bg-stone-50 transition">소모품/판관비</button>
+                <button onclick="switchTab('tab-faq')" id="btn-tab-faq" class="tab-btn py-1.5 px-0.5 text-center rounded-md hover:bg-stone-50 transition">회계 FAQ</button>
+            </div>
+
+            <!-- 탭 내용 영역 (스크롤러 지원) -->
+            <div class="overflow-y-auto pr-1 text-[11px] text-stone-600 leading-relaxed space-y-3 shrink grow min-h-0">
+                
+                <!-- 탭 1: 면세/과세 원재료 기준 -->
+                <div id="tab-tax" class="tab-content space-y-2.5">
+                    <h4 class="font-[800] text-[#5c4033] text-xs">🥛 면세와 과세 원재료의 세금 기준</h4>
+                    <p>우리 매장에 들여오는 식자재 중 가공하지 않은 농·축·수·임산물은 **면세(부가세 0%)**이고, 공장에서 가공했거나 수입 유통된 식품은 **과세(부가세 10% 포함)**입니다.</p>
+                    <div class="bg-stone-50 p-2.5 rounded-lg space-y-1.5 border border-stone-200/50">
+                        <p class="font-[700] text-amber-800">• 면세 품목 (체크 활성화):</p>
+                        <p class="pl-2">흰 우유(생우유), 생과일, 국산 생원두(로스팅 전 생두), 야채 등 가공되지 않은 1차 원료.</p>
+                        <p class="font-[700] text-amber-800">• 과세 품목 (체크 해제):</p>
+                        <p class="pl-2">볶은 원두(홀빈/분쇄), 수입 멸균 우유, 가공 우유(초코, 딸기 등), 시럽, 초코소스, 파우더, 과일청 등 완제품 가공식품.</p>
+                    </div>
+                    <p class="text-stone-500">💡 **과세 원재료는 세무 신고 시 부가세를 전액 환급(매입세액공제)** 받으므로, 순수 레시피 단가를 낼 땐 부가세를 제외한 공급가액으로만 합산해야 마진 계산이 틀어지지 않습니다. 본 계산기는 면세 해제 시 공급가로 자동 역산해 계산해줍니다.</p>
+                </div>
+
+                <!-- 탭 2: ml 부피단위 비중 곱하기 -->
+                <div id="tab-density" class="tab-content hidden space-y-2.5">
+                    <h4 class="font-[800] text-[#5c4033] text-xs">⚖️ 부피(ml) 단위를 무게(g)로 바꿀 때 비중을 타는 이유</h4>
+                    <p>우리가 액체 재료를 살 때는 통상 **ml(부피)** 단위로 사오지만, 매장에서 음료를 조제할 때는 계량 저울에 대고 **g(무게)**으로 펌핑하거나 붓게 됩니다.</p>
+                    <p>물은 1ml가 정확히 1g이지만, 시럽이나 소스는 입자가 물보다 조밀하고 무겁기 때문에 1ml가 훨씬 더 많은 무게(g)를 차지합니다.</p>
+                    <div class="bg-amber-50/50 p-2.5 rounded-lg space-y-1 border border-amber-200/30">
+                        <p class="font-[700] text-amber-900">• 우유 비중 (1.03):</p>
+                        <p class="pl-2 mb-1">우유 1,000ml는 저울에 달면 약 1,030g입니다.</p>
+                        <p class="font-[700] text-amber-900">• 시럽 비중 (1.25):</p>
+                        <p class="pl-2 mb-1">시럽 1,000ml는 실제 저울 위에서 무려 1,250g입니다.</p>
+                        <p class="font-[700] text-amber-900">• 초코 소스/연유 비중 (1.35):</p>
+                        <p class="pl-2">꾸덕한 소스 1,000ml는 실제 무게가 1,350g에 달합니다.</p>
+                    </div>
+                    <p class="text-stone-500">🚨 이를 무시하고 단순 1ml=1g으로 매칭하면, 한 잔 제조 시 식자재 소모량이 과소평가되어 사장님도 모르는 사이에 **마진율 펑크**가 발생합니다. 저희 계산기의 비중 보정을 사용하시면 안전합니다.</p>
+                </div>
+
+                <!-- 탭 3: 캐리어 및 판관비 개념 -->
+                <div id="tab-sga" class="tab-content hidden space-y-2.5">
+                    <h4 class="font-[800] text-[#5c4033] text-xs">🛍️ 종이 쇼핑백, 휴지는 왜 기타원부자재(판관비)로 빼나요?</h4>
+                    <p>원가 회계에는 음료 한 잔을 팔 때 무조건 소모되는 **'직접 매출원가(직접비)'**가 있고, 매장 전반의 운영에 쓰이는 **'판매비와 관리비(간접비/판관비)'**가 있습니다.</p>
+                    <div class="bg-stone-50 p-2.5 rounded-lg space-y-1 border border-stone-200/50">
+                        <p class="font-[700] text-stone-700">• 테이크아웃 컵, 뚜껑, 빨대, 홀더</p>
+                        <p class="pl-2 mb-1.5 text-stone-500">음료가 나갈 때 반드시 1잔당 1개씩 강제 동반되는 물품이므로 '음료 직접원가'에 포함됩니다.</p>
+                        <p class="font-[700] text-stone-700">• 캐리어, 냅킨, 물티슈, 트레이 종이매트</p>
+                        <p class="pl-2 text-stone-500">손님의 자율적인 필요나 배달 여부에 따라 사용 개수가 유동적으로 변하므로 한 잔당 원가에 포함시키는 데 무리가 있습니다.</p>
+                    </div>
+                    <p class="text-stone-500">💡 캐리어나 냅킨 같은 비고정 소모품은 음료 잔당 단가에 대입하기보다, 월말 전체 소비 비용을 산출하여 **'판매비와 관리비(판관비)'**의 '소모품비' 항목으로 통합 정산하는 것이 레시피 직접 단가를 명확히 파악하는 비결입니다.</p>
+                </div>
+
+                <!-- 탭 4: 초보 사장님 실무 FAQ -->
+                <div id="tab-faq" class="tab-content hidden space-y-3">
+                    <h4 class="font-[800] text-[#5c4033] text-xs">💬 카페 사장님들이 자주 묻는 원가 질문 FAQ</h4>
+                    
+                    <div class="space-y-1">
+                        <p class="font-[700] text-amber-800">Q. 카페 평균 목표 원가율은 얼마가 베스트인가요?</p>
+                        <p class="text-stone-600 pl-2">A. 테이크아웃 전용점은 **30% ~ 33%**, 홀 비중이 큰 곳은 **25% ~ 30%** 선을 목표 원가율로 권장합니다. 원부자재 가격이 40%를 넘어서면 임대료와 인건비를 제외하고 손에 쥐는 마진이 극도로 희박해집니다.</p>
+                    </div>
+                    
+                    <div class="space-y-1 border-t border-stone-100 pt-2">
+                        <p class="font-[700] text-amber-800">Q. 로스율은 왜 꼭 3% 가산해야 하나요?</p>
+                        <p class="text-stone-600 pl-2">A. 시럽 펌프 호스 끝에 남아 버려지는 한 방울, 우유 스팀 후 피처 바닥에 남은 우유 잔량, 원두 그라인더 날에 끼여 유실되는 커피 가루 등은 계량 저울에 나타나지 않는 보이지 않는 손실입니다. 이 손실분이 누적되면 마진 오류가 나기 때문에 3% 수준의 버퍼를 가산해 계산하는 것이 필수적입니다.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 하단 닫기 단추 -->
+            <div class="mt-4 pt-2 border-t border-stone-100 text-center">
+                <button onclick="closeAccountingModal()" class="w-full py-2 bg-[#5c4033] hover:bg-[#4a3525] text-stone-100 rounded-lg text-xs font-[700] transition cursor-pointer">
+                    내용 확인 완료
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 커스텀 알림/안전 모달창 -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-6 z-50" onclick="closeCustomModal()">
+        <div class="bg-white p-5 rounded-xl max-w-xs w-full shadow-2xl relative text-center" onclick="event.stopPropagation()">
+            <div id="modal-icon" class="text-3xl text-emerald-500 mb-2">
+                <i class="fa-regular fa-circle-check"></i>
+            </div>
+            <h4 id="modal-title" class="font-[800] text-stone-900 text-sm mb-1.5">안내</h4>
+            <p id="modal-message" class="text-xs font-[400] text-stone-600 leading-relaxed whitespace-pre-line mb-4"></p>
+            <button onclick="closeCustomModal()" class="w-full py-1.5 bg-[#5c4033] hover:bg-[#4a3525] text-white rounded-md text-xs font-[700] transition cursor-pointer">확인</button>
+        </div>
+    </div>
+
+    <!-- 도움말 데이터베이스 -->
+    <div class="hidden">
+        <span id="tip-target-ratio">목표 원가율은 판매 가격 대비 순수 원재료가 차지하는 비중입니다. 카페 프랜차이즈 및 개인 카페 평균 35% 선을 디폴트로 추천해 드립니다.</span>
+        <span id="tip-recommended-price">목표 원가율과 최종 원가를 기반으로 역산한 1잔당 적정 판매 금액입니다. 부가세 10%가 포함된 최종 소비자가격입니다.</span>
+        <span id="tip-raw-material">음료에 들어가는 원부자재 내역입니다. 체크박스를 풀면 해당 원재료가 실시간 원가 총합에서 즉시 제외됩니다. 면세 항목일 경우 체크하시면 부가세 제외 연산을 거치지 않고 원액 단가 그대로를 합산합니다. 부피(ml) 재료 선택 시 각 비중에 맞춰 무게(g)로 자동 변환 연산되어 저울 계량 레시피 원가를 오차 없이 산출해 줍니다.</span>
+        <span id="tip-subsidiary">테이크아웃 판매 시 잔마다 사용되는 포장 원자재 단가입니다. 대용량 묶음 박스 총액과 총 개수를 입력하시면 자동으로 1개당 단가로 나누어 정밀 가산됩니다. 원치 않는 부자재는 우측 쓰레기통 버튼을 눌러 목록에서 완전히 지울 수 있습니다.</span>
+        <span id="tip-loss-rate">원재료에 로스율을 가중한 총원가 및 목표 원가율을 고려하여 최종 매칭한 실시간 카페 음료 잔당 순수 운영 원가입니다.</span>
+        <span id="tip-loss-rate-desc">펌프 바닥 잔량, 우유 스팀 후 유실량 등 가공 과정에서 눈에 보이지 않게 손실되는 원부자재 보정용 비율입니다. 통상적으로 3% 정도를 가산하여 계산해야 사장님의 실매출 마진 펑크를 막을 수 있습니다.</span>
+    </div>
+
+    <script>
+        // 기본 부자재 리스트
+        const defaultSubItems = [
+            { id: 'sub_cup', name: '일회용 컵', box: 1000, price: 80000, taxExempt: false },
+            { id: 'sub_lid', name: '컵 뚜껑', box: 1000, price: 35000, taxExempt: false },
+            { id: 'sub_holder', name: '컵 홀더', box: 1000, price: 50000, taxExempt: false },
+            { id: 'sub_straw', name: '개별 빨대', box: 500, price: 7500, taxExempt: false },
+            { id: 'sub_bag', name: '비닐 봉투', box: 100, price: 5000, taxExempt: false }
+        ];
+
+        // 도움말 제어
+        function toggleTooltip(event, id) {
+            event.stopPropagation();
+            const text = document.getElementById(id).innerText;
+            document.getElementById('tooltip-text').innerText = text;
+            const modal = document.getElementById('global-tooltip');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeTooltip() {
+            const modal = document.getElementById('global-tooltip');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
+        // 비법서 도움말 모달 활성화 제어
+        function openAccountingModal() {
+            const modal = document.getElementById('accounting-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            switchTab('tab-tax');
+        }
+
+        // 비법서 도움말 모달 비활성화 제어
+        function closeAccountingModal() {
+            const modal = document.getElementById('accounting-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
+        // 비법서 내 탭 전환 로직
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-white', 'text-[#5c4033]', 'shadow-2xs');
+                btn.classList.add('hover:bg-stone-50');
+            });
+
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('hover:bg-stone-50');
+                activeBtn.classList.add('bg-white', 'text-[#5c4033]', 'shadow-2xs');
+            }
+        }
+
+        // 알림 모달 창
+        function showCustomModal(title, message, iconType = "success") {
+            const modal = document.getElementById('custom-modal');
+            const titleEl = document.getElementById('modal-title');
+            const messageEl = document.getElementById('modal-message');
+            const iconEl = document.getElementById('modal-icon');
+
+            titleEl.innerText = title;
+            messageEl.innerText = message;
+
+            if (iconType === "success") {
+                iconEl.innerHTML = '<i class="fa-regular fa-circle-check text-emerald-500"></i>';
+            } else if (iconType === "warning") {
+                iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i>';
+            } else if (iconType === "error") {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-500"></i>';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // ==========================================
+        // 1. 원재료비 컨트롤 로직 (체크박스, 면세 체크박스 매핑)
+        // ==========================================
+        let materialCount = 0;
+
+        function addMaterialRow(initialData = null) {
+            materialCount++;
+            const container = document.getElementById('material-list');
+            const row = document.createElement('div');
+            row.id = `material-row-${materialCount}`;
+            row.className = "material-row p-3 bg-stone-50 rounded-lg border border-stone-200 relative space-y-2.5 text-xs shadow-2xs";
+
+            const isChecked = initialData ? initialData.checked : true;
+            const name = initialData ? initialData.name : "";
+            const price = initialData ? initialData.price : "";
+            
+            let taxExempt = false;
+            if (initialData) {
+                if (initialData.taxExempt !== undefined) {
+                    taxExempt = initialData.taxExempt;
+                } else if (initialData.vatChecked !== undefined) {
+                    taxExempt = !initialData.vatChecked; 
+                }
+            }
+
+            const capacity = initialData ? initialData.capacity : "1000";
+            const densityType = initialData ? initialData.densityType : "g";
+            const usage = initialData ? initialData.usage : "";
+
+            row.innerHTML = `
+                <!-- 1행: 체크박스 | 재료명 수정 필드 | 구매가 입력 | 면세 여부 선택 | 삭제버튼 -->
+                <div class="flex items-center gap-1 select-none">
+                    <input type="checkbox" class="material-check rounded text-amber-900 border-stone-300 focus:ring-[#5c4033] w-3.5 h-3.5 cursor-pointer" ${isChecked ? 'checked' : ''} onchange="calculateAll()">
+                    <input type="text" placeholder="재료명" value="${name}" class="material-name text-[11px] font-[700] text-stone-700 bg-transparent border-b border-stone-200 hover:border-amber-600 focus:border-amber-800 focus:outline-none px-0.5 truncate w-0 min-w-0 grow" oninput="calculateAll()">
+                    <input type="number" placeholder="구매가" value="${price}" class="material-price w-12 text-[11px] text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-amber-800" oninput="calculateAll()">
+                    <span class="text-[9px] text-stone-400 shrink-0">원</span>
+                    <label class="flex items-center gap-0.5 cursor-pointer shrink-0">
+                        <input type="checkbox" class="material-tax-exempt rounded text-amber-900 border-stone-300 focus:ring-[#5c4033] w-3 h-3 cursor-pointer" ${taxExempt ? 'checked' : ''} onchange="calculateAll()">
+                        <span class="text-[9px] text-stone-500 font-[700]">면세</span>
+                    </label>
+                    <button onclick="removeMaterialRow(${materialCount})" class="text-stone-400 hover:text-rose-500 transition cursor-pointer text-xs shrink-0 pl-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+
+                <!-- 2행: 구매용량 | 중량/부비 비중 선택기 | 레시피당 사용량 | 한줄원가 -->
+                <div class="flex items-center justify-between gap-1.5 pt-1.5 border-t border-dashed border-stone-200/80 text-[10px]">
+                    <div class="flex items-center gap-1 shrink-0">
+                        <span class="text-stone-400">용량</span>
+                        <input type="number" value="${capacity}" class="material-capacity w-12 text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-amber-800" oninput="calculateAll()">
+                        <select class="material-unit-density text-[10px] bg-stone-100 border border-stone-300 rounded px-1 py-0.5 cursor-pointer text-stone-600 font-[400]" onchange="calculateAll()">
+                            <option value="g" ${densityType === 'g' ? 'selected' : ''}>g (무게 기준)</option>
+                            <option value="ml_water" ${densityType === 'ml_water' ? 'selected' : ''}>ml (물 비중 1.0)</option>
+                            <option value="ml_milk" ${densityType === 'ml_milk' ? 'selected' : ''}>ml (우유 비중 1.03)</option>
+                            <option value="ml_syrup" ${densityType === 'ml_syrup' ? 'selected' : ''}>ml (시럽 비중 1.25)</option>
+                            <option value="ml_sauce" ${densityType === 'ml_sauce' ? 'selected' : ''}>ml (소스 비중 1.35)</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <span class="text-stone-400">레시피</span>
+                        <input type="number" placeholder="0" value="${usage}" class="material-usage w-10 text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-amber-800" oninput="calculateAll()">
+                        <span class="text-stone-500 font-[700]">g</span>
+                    </div>
+                    <div class="text-[11px] font-[500] text-stone-500 shrink-0">
+                        원가: <span class="row-cost text-stone-900 font-[800]">0</span>원
+                    </div>
+                </div>
+            `;
+            container.appendChild(row);
+            bindRealtimeEvents(row);
+            calculateAll();
+        }
+
+        function removeMaterialRow(id) {
+            const row = document.getElementById(`material-row-${id}`);
+            if (row) row.remove();
+            calculateAll();
+        }
+
+
+        // ==========================================
+        // 2. 부자재비 입력란 컨트롤 로직 (동적 추가, 기본 과세/면세 체크박스 전환)
+        // ==========================================
+        let subsidiaryCount = 0;
+
+        function addCustomSubsidiary(initialData = null) {
+            subsidiaryCount++;
+            const container = document.getElementById('subsidiary-list');
+            const div = document.createElement('div');
+            div.id = `sub-row-${subsidiaryCount}`;
+            div.className = "subsidiary-row flex items-center justify-between p-2 bg-[#fdfdfc] rounded-lg border border-stone-200 text-xs shadow-2xs gap-1.5";
+
+            const id = initialData && initialData.id ? initialData.id : `sub_custom_${subsidiaryCount}`;
+            const name = initialData ? initialData.name : "추가 부자재";
+            const price = initialData ? initialData.price : "5000";
+            const box = initialData ? initialData.box : "100";
+            const isChecked = initialData ? initialData.checked : false;
+            const isTaxExempt = initialData ? initialData.taxExempt : false;
+
+            div.setAttribute('data-sub-id', id);
+
+            div.innerHTML = `
+                <!-- 좌측: 체크박스, 수정 가능한 부자재 이름, 면세(Tax-exempt) 토글 -->
+                <div class="flex items-center min-w-[115px] shrink-0 gap-1 select-none">
+                    <input type="checkbox" class="sub-checkbox rounded text-[#5c4033] border-stone-300 focus:ring-amber-800 w-3.5 h-3.5 cursor-pointer" ${isChecked ? 'checked' : ''} onchange="calculateAll()">
+                    <input type="text" value="${name}" class="sub-custom-name w-14 text-[11px] font-[700] text-stone-700 bg-transparent border-b border-stone-200 hover:border-amber-600 focus:border-amber-800 focus:outline-none px-0.5 truncate" oninput="calculateAll()" placeholder="부자재명">
+                    <label class="flex items-center gap-0.5 cursor-pointer shrink-0">
+                        <input type="checkbox" class="sub-tax-exempt rounded text-amber-900 border-stone-300 focus:ring-[#5c4033] w-3 h-3 cursor-pointer" ${isTaxExempt ? 'checked' : ''} onchange="calculateSubUnit(${subsidiaryCount})">
+                        <span class="text-[9px] text-stone-500 font-[700]">면세</span>
+                    </label>
+                </div>
+                
+                <!-- 우측: 수식 입력부 및 삭제버튼 -->
+                <div class="flex items-center justify-end gap-0.5 grow">
+                    <input type="number" value="${price}" class="sub-price w-11 text-[10px] text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-[#5c4033]" oninput="calculateSubUnit(${subsidiaryCount})">
+                    <span class="text-[9px] text-stone-400 shrink-0">원</span>
+                    <span class="text-[9px] text-stone-400 shrink-0">÷</span>
+                    <input type="number" value="${box}" class="sub-box w-9 text-[10px] text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-[#5c4033]" oninput="calculateSubUnit(${subsidiaryCount})">
+                    <span class="text-[9px] text-stone-400 shrink-0">개</span>
+                    <span class="text-[9px] text-stone-400 shrink-0">=</span>
+                    <span class="text-[11px] font-[800] text-stone-700 min-w-[24px] text-right shrink-0"><span class="sub-unit-display">0</span>원</span>
+                    
+                    <button onclick="removeSubsidiaryRow(${subsidiaryCount})" class="text-stone-400 hover:text-rose-500 transition cursor-pointer text-xs shrink-0 pl-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+
+            const inputs = div.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+                input.addEventListener('change', calculateAll);
+            });
+
+            calculateSubUnit(subsidiaryCount);
+            calculateAll();
+        }
+
+        function removeSubsidiaryRow(id) {
+            const row = document.getElementById(`sub-row-${id}`);
+            if (row) row.remove();
+            calculateAll();
+        }
+
+        // 개당 쪼개기 부자재 낱개 단가 실시간 동기화 (부가세 제외 실원가 반영)
+        function calculateSubUnit(id) {
+            const row = document.getElementById(`sub-row-${id}`);
+            if (!row) return;
+
+            const priceInput = row.querySelector('.sub-price');
+            const boxInput = row.querySelector('.sub-box');
+            const taxExemptCheck = row.querySelector('.sub-tax-exempt');
+            const displaySpan = row.querySelector('.sub-unit-display');
+
+            if (!priceInput || !boxInput || !displaySpan) return;
+
+            let price = parseFloat(priceInput.value) || 0;
+            const box = parseFloat(boxInput.value) || 1;
+            const isTaxExempt = taxExemptCheck ? taxExemptCheck.checked : false;
+
+            if (!isTaxExempt) {
+                price = price / 1.1;
+            }
+
+            const unitCost = price / box;
+            displaySpan.innerText = Math.round(unitCost);
+            calculateAll();
+        }
+
+        // 부자재 기본목록 최초 렌더링용 빌더
+        function initSubsidiaries() {
+            const container = document.getElementById('subsidiary-list');
+            container.innerHTML = ""; // 클리어
+            defaultSubItems.forEach(item => {
+                const autoCheck = (item.id === 'sub_cup' || item.id === 'sub_lid' || item.id === 'sub_straw');
+                addCustomSubsidiary({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    box: item.box,
+                    checked: autoCheck, 
+                    taxExempt: item.taxExempt 
+                });
+            });
+        }
+
+
+        // ==========================================
+        // ⚙️ 실시간 통합 연산 엔진 (Perfect Null-Guard & VAT 제외 공급가 원가 검증)
+        // ==========================================
+        function calculateAll() {
+            // 1. 원재료비 실시간 연합 분석
+            let totalMaterialCost = 0;
+            const materialListEl = document.getElementById('material-list');
+            
+            if (materialListEl) {
+                const materialRows = materialListEl.getElementsByClassName('material-row');
+
+                for (let row of materialRows) {
+                    const checkEl = row.querySelector('.material-check');
+                    const nameEl = row.querySelector('.material-name');
+                    const priceEl = row.querySelector('.material-price');
+                    const taxExemptEl = row.querySelector('.material-tax-exempt');
+                    const capacityEl = row.querySelector('.material-capacity');
+                    const densityEl = row.querySelector('.material-unit-density');
+                    const usageEl = row.querySelector('.material-usage');
+                    const rowCostEl = row.querySelector('.row-cost');
+
+                    if (!checkEl || !nameEl || !priceEl || !taxExemptEl || !capacityEl || !densityEl || !usageEl) continue;
+
+                    if (!checkEl.checked) {
+                        if (rowCostEl) rowCostEl.innerText = "0";
+                        continue;
+                    }
+
+                    const capacity = parseFloat(capacityEl.value) || 0;
+                    const usage = parseFloat(usageEl.value) || 0;
+                    let price = parseFloat(priceEl.value) || 0;
+                    const isTaxExempt = taxExemptEl.checked;
+                    const densityType = densityEl.value;
+
+                    if (!isTaxExempt) {
+                        price = price / 1.1;
+                    }
+
+                    const densityMap = {
+                        'g': 1.0,          
+                        'ml_water': 1.0,   
+                        'ml_milk': 1.03,   
+                        'ml_syrup': 1.25,  
+                        'ml_sauce': 1.35   
+                    };
+                    const density = densityMap[densityType] || 1.0;
+
+                    let finalCapacity = capacity;
+                    if (densityType.startsWith('ml_')) {
+                        finalCapacity = capacity * density; 
+                    }
+
+                    let rowCost = 0;
+                    if (finalCapacity > 0) {
+                        rowCost = (price / finalCapacity) * usage;
+                    }
+
+                    if (rowCostEl) {
+                        rowCostEl.innerText = Math.round(rowCost).toLocaleString();
+                    }
+                    totalMaterialCost += rowCost;
+                }
+            }
+
+            // 2. 부자재비 실시간 연합 분석
+            let totalSubCost = 0;
+            const subsidiaryListEl = document.getElementById('subsidiary-list');
+            if (subsidiaryListEl) {
+                const subRows = subsidiaryListEl.getElementsByClassName('subsidiary-row');
+                for (let row of subRows) {
+                    const checkEl = row.querySelector('.sub-checkbox');
+                    const priceInput = row.querySelector('.sub-price');
+                    const boxInput = row.querySelector('.sub-box');
+                    const taxExemptCheck = row.querySelector('.sub-tax-exempt');
+
+                    if (!checkEl || !priceInput || !boxInput) continue;
+
+                    if (checkEl.checked) {
+                        let price = parseFloat(priceInput.value) || 0;
+                        const box = parseFloat(boxInput.value) || 1;
+                        const isTaxExempt = taxExemptCheck ? taxExemptCheck.checked : false;
+
+                        if (!isTaxExempt) {
+                            price = price / 1.1;
+                        }
+
+                        totalSubCost += (price / box);
+                    }
+                }
+            }
+
+            // 3. 로스율 반영 수식 처리
+            const lossSlider = document.getElementById('loss-slider');
+            const lossRate = lossSlider ? (parseFloat(lossSlider.value) || 0) : 0;
+            const lossDisplay = document.getElementById('loss-display');
+            if (lossDisplay) {
+                lossDisplay.innerText = `${lossRate}%`;
+            }
+
+            const finalCalculatedCost = (totalMaterialCost * (1 + (lossRate / 100))) + totalSubCost;
+            const totalCostDisplay = document.getElementById('total-cost-display');
+            if (totalCostDisplay) {
+                totalCostDisplay.innerText = `${Math.round(finalCalculatedCost).toLocaleString()}원`;
+            }
+
+            // 4. 권장소비자가 대시보드 역산
+            const targetRatioSlider = document.getElementById('target-ratio-slider');
+            const targetRatio = targetRatioSlider ? (parseFloat(targetRatioSlider.value) || 35) : 35;
+            const targetRatioDisplay = document.getElementById('target-ratio-display');
+            if (targetRatioDisplay) {
+                targetRatioDisplay.innerText = `${targetRatio}%`;
+            }
+
+            let recommendedPrice = 0;
+            if (finalCalculatedCost > 0 && targetRatio > 0) {
+                recommendedPrice = (finalCalculatedCost / (targetRatio / 100)) * 1.1;
+            }
+            const recommendedPriceDisplay = document.getElementById('recommended-price-display');
+            if (recommendedPriceDisplay) {
+                recommendedPriceDisplay.innerText = `${Math.round(recommendedPrice).toLocaleString()}원`;
+            }
+        }
+
+        // 인풋 변경 시 실시간 감지 바인딩 보강
+        function bindRealtimeEvents(element) {
+            const inputs = element.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+                input.addEventListener('change', calculateAll);
+            });
+        }
+
+
+        // ==========================================
+        // 💾 데이터 EXPORT (내보내기) 및 IMPORT (불러오기) 기능
+        // ==========================================
+        
+        function exportData() {
+            const drinkName = document.getElementById('drink-name').value.trim() || "미지정_음료";
+            const targetRatio = document.getElementById('target-ratio-slider').value;
+            const lossRate = document.getElementById('loss-slider').value;
+            
+            const materials = [];
+            const materialListEl = document.getElementById('material-list');
+            if (materialListEl) {
+                const materialRows = materialListEl.getElementsByClassName('material-row');
+                for (let row of materialRows) {
+                    const checked = row.querySelector('.material-check')?.checked;
+                    const name = row.querySelector('.material-name')?.value;
+                    const price = row.querySelector('.material-price')?.value;
+                    const taxExempt = row.querySelector('.material-tax-exempt')?.checked;
+                    const capacity = row.querySelector('.material-capacity')?.value;
+                    const densityType = row.querySelector('.material-unit-density')?.value;
+                    const usage = row.querySelector('.material-usage')?.value;
+
+                    materials.push({ checked, name, price, taxExempt, capacity, densityType, usage });
+                }
+            }
+            
+            const subsidiaries = [];
+            const subsidiaryListEl = document.getElementById('subsidiary-list');
+            if (subsidiaryListEl) {
+                const subRows = subsidiaryListEl.getElementsByClassName('subsidiary-row');
+                for (let row of subRows) {
+                    const isChecked = row.querySelector('.sub-checkbox')?.checked;
+                    if (isChecked) {
+                        const id = row.getAttribute('data-sub-id');
+                        const name = row.querySelector('.sub-custom-name')?.value;
+                        const price = row.querySelector('.sub-price')?.value;
+                        const box = row.querySelector('.sub-box')?.value;
+                        const taxExempt = row.querySelector('.sub-tax-exempt')?.checked;
+                        subsidiaries.push({ id, name, price, box, checked: true, taxExempt });
+                    }
+                }
+            }
+            
+            const exportPayload = {
+                version: "1.4",
+                drinkName,
+                targetRatio: parseInt(targetRatio),
+                lossRate: parseInt(lossRate),
+                materials,
+                subsidiaries
+            };
+            
+            const jsonString = JSON.stringify(exportPayload, null, 2);
+            const blob = new Blob([jsonString], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${drinkName.replace(/\s+/g, '_')}_원가계산서.txt`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+            
+            showCustomModal("저장 완료", `📋 '${drinkName}' 원가 명세서 파일이 안전하게 내려받기 되었습니다. (선택된 부자재만 포함)`, "success");
+        }
+
+        function triggerImport() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedObj = JSON.parse(e.target.result);
+                    
+                    if (!importedObj.materials) {
+                        showCustomModal("불러오기 실패", "올바른 원가계산서 백업 파일 형식이 아닙니다.", "error");
+                        return;
+                    }
+                    
+                    document.getElementById('drink-name').value = importedObj.drinkName || "";
+                    document.getElementById('target-ratio-slider').value = importedObj.targetRatio || 35;
+                    document.getElementById('loss-slider').value = importedObj.lossRate || 3;
+                    
+                    const materialContainer = document.getElementById('material-list');
+                    materialContainer.innerHTML = "";
+                    importedObj.materials.forEach(mat => {
+                        addMaterialRow(mat);
+                    });
+                    
+                    const subsidiaryContainer = document.getElementById('subsidiary-list');
+                    subsidiaryContainer.innerHTML = "";
+                    
+                    if (importedObj.subsidiaries && Array.isArray(importedObj.subsidiaries)) {
+                        importedObj.subsidiaries.forEach(sub => {
+                            addCustomSubsidiary(sub);
+                        });
+                    }
+
+                    defaultSubItems.forEach(item => {
+                        const exists = importedObj.subsidiaries && importedObj.subsidiaries.some(s => s.id === item.id);
+                        if (!exists) {
+                            addCustomSubsidiary({
+                                id: item.id,
+                                name: item.name,
+                                price: item.price,
+                                box: item.box,
+                                checked: false,
+                                taxExempt: item.taxExempt
+                            });
+                        }
+                    });
+                    
+                    calculateAll();
+                    showCustomModal("데이터 복구 완료", `📂 '${importedObj.drinkName || '불러온 메뉴'}'의 카페 장부 정보가 완벽 복원되었습니다.`, "success");
+                    
+                    event.target.value = ''; 
+                } catch (err) {
+                    showCustomModal("분석 오류", "파일 데이터 파싱 중 실패하였습니다. 올바른 텍스트 백업 파일인지 확인해주세요.", "error");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // 초기 시작 시 기본 모크 데이터 로드
+        window.onload = function() {
+            initSubsidiaries(); 
+            
+            addMaterialRow({
+                name: "에스프레소 원두",
+                price: "25000",
+                capacity: "1000",
+                usage: "20",
+                densityType: "g",
+                checked: true,
+                taxExempt: false 
+            });
+            
+            document.body.addEventListener('click', function() {
+                closeTooltip();
+            });
+        };
+    </script>
+</body>
+</html>
