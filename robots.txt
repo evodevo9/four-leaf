@@ -1,0 +1,6 @@
+# 모든 검색 로봇의 수집을 허용합니다.
+User-agent: *
+Allow: /
+
+# 새로운 Vercel 도메인 기준의 사이트맵 주소를 명시합니다.
+Sitemap: https://cafe-eight-kappa.vercel.app/sitemap.xml
