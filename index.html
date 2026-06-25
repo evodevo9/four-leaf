@@ -6,8 +6,8 @@
     <title>초보 사장님을 위한 카페음료 원가 계산기</title>
     
     <!-- 🔍 검색엔진 인증용 메타태그 등록 -->
-    <meta name="naver-site-verification" content="29ff9648992af9158d1aba0b15ee8b039534d22e" />
-    <meta name="google-site-verification" content="n-TsP7ue8qjA56AY0R8Lze77Aefv_R-vARdbcy30x5A" />
+    <meta name="naver-site-verification" content="38479cf22fc9405218438777943d28e6afdcae8c" />
+    <meta name="google-site-verification" content="Qs73gPV3jveEeLMJUeKWVXUaGHRH4-St3N9_XeAuWUE" />
 
     <!-- Tailwind CSS CDN (v4) -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -72,14 +72,14 @@
             font-style: normal;
         }
 
-        /* 💡 전체 선택자(*) 대신 필수 글자 요소에만 페이퍼로지체를 상속시킵니다. */
+        /* 전체 선택자(*) 대신 필수 글자 요소에만 페이퍼로지체를 상속시킵니다. */
         body, input, select, button, textarea, p, span, div, label, h1, h2, h3, h4, h5, h6 {
             font-family: 'PaperlogyY', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* 💡 FontAwesome 아이콘 서체가 페이퍼로지체에 강제 덮어씌워지지 않도록 격리 보존합니다. */
+        /* FontAwesome 아이콘 서체가 페이퍼로지체에 강제 덮어씌워지지 않도록 격리 보존합니다. */
         .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands {
             font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
             font-weight: 900 !important; 
@@ -108,7 +108,7 @@
         <div class="max-w-md mx-auto px-4 py-2.5">
             <div class="flex items-center justify-between mb-1.5">
                 <h1 class="text-sm font-[900] text-[#5c4033] flex items-center gap-1.5">
-                    <span class="text-base text-amber-700">☕</span> 초보 사장님 원가 계산기(260624)
+                    <span class="text-base text-amber-700">☕</span> 초보 사장님 원가 계산기
                 </h1>
             </div>
             
@@ -159,7 +159,7 @@
                     <input type="text" id="drink-name" placeholder="예: 아이스 아메리카노 (16oz)" class="w-full text-xs bg-stone-50 border border-stone-200 rounded-md px-3 py-2 font-[800] text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-800 focus:border-amber-800">
                 </div>
 
-                <!-- 💡 해결책 2: 구글 애드센스 심사 통과를 위해, 도움말 비법서 버튼 링크를 상단 메인 섹션에 우아하게 배치 -->
+                <!-- 필수 세무/회계 비법서 가이드 링크 -->
                 <div class="pt-2 border-t border-dashed border-stone-200">
                     <button onclick="openAccountingModal()" class="w-full py-2 px-3 bg-[#3e2723] hover:bg-[#4e3629] text-stone-100 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
                         <span class="text-[#fcd34d] animate-pulse"><i class="fa-solid fa-lightbulb"></i></span>
@@ -243,7 +243,7 @@
 
     </main>
 
-    <!-- 💡 해결책 1: 하단 고정 바 영역을 구글 애드센스 모바일 광고가 무리 없이 배치될 수 있는 표준 홀더 공간으로 전면 개방 -->
+    <!-- 구글 애드센스 광고 게재 표준 가이드 홀더 영역 -->
     <div class="fixed bottom-0 left-0 right-0 bg-[#faf8f5] border-t border-stone-200 h-16 flex items-center justify-center z-50 shadow-md">
         <!-- 
           실사용 구글 애드센스 광고 적용 시 아래 태그 영역 주석을 제거하고 광고 코드를 바인딩하세요.
@@ -302,7 +302,7 @@
                         <p class="font-[700] text-amber-800">• 면세 품목 (체크 활성화):</p>
                         <p class="pl-2">흰 우유(생우유), 생과일, 국산 생원두(로스팅 전 생두), 야채 등 가공되지 않은 1차 원료.</p>
                         <p class="font-[700] text-amber-800">• 과세 품목 (체크 해제):</p>
-                        <p class="pl-2">볶은 원두(홀빈/분쇄), 수입 멸균 우유, 가공 우유(초코, 딸기 등), 시럽, 초코소스, 파우더, 과일청 등 완제품 가공식품.</p>
+                        <p class="pl-2">볶은 원두(홀빈, 분쇄 원두)는 가공식품으로 분류되어 과세(부가세 10% 포함)되니 주의하셔야 합니다.</p>
                     </div>
                     <p class="text-stone-500">💡 **과세 원재료는 세무 신고 시 부가세를 전액 환급(매입세액공제)** 받으므로, 순수 레시피 단가를 낼 땐 부가세를 제외한 공급가액으로만 합산해야 마진 계산이 틀어지지 않습니다. 본 계산기는 면세 해제 시 공급가로 자동 역산해 계산해줍니다.</p>
                 </div>
@@ -642,6 +642,14 @@
             calculateAll();
         }
 
+        function closeCustomModal() {
+            const modal = document.getElementById('custom-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
         // 부자재 기본목록 최초 렌더링용 빌더
         function initSubsidiaries() {
             const container = document.getElementById('subsidiary-list');
@@ -724,7 +732,7 @@
                 }
             }
 
-            // 2. 부자재비 실시간 연합 분석
+            // 2. 부자재비 실시간 연합 분석 (과세 부자재의 공급가액 역산 포함)
             let totalSubCost = 0;
             const subsidiaryListEl = document.getElementById('subsidiary-list');
             if (subsidiaryListEl) {
@@ -798,66 +806,108 @@
         // ==========================================
         
         function exportData() {
-            const drinkName = document.getElementById('drink-name').value.trim() || "미지정_음료";
-            const targetRatio = document.getElementById('target-ratio-slider').value;
-            const lossRate = document.getElementById('loss-slider').value;
-            
-            const materials = [];
-            const materialListEl = document.getElementById('material-list');
-            if (materialListEl) {
-                const materialRows = materialListEl.getElementsByClassName('material-row');
-                for (let row of materialRows) {
-                    const checked = row.querySelector('.material-check')?.checked;
-                    const name = row.querySelector('.material-name')?.value;
-                    const price = row.querySelector('.material-price')?.value;
-                    const taxExempt = row.querySelector('.material-tax-exempt')?.checked;
-                    const capacity = row.querySelector('.material-capacity')?.value;
-                    const densityType = row.querySelector('.material-unit-density')?.value;
-                    const usage = row.querySelector('.material-usage')?.value;
+            try {
+                const drinkNameEl = document.getElementById('drink-name');
+                const drinkName = drinkNameEl ? (drinkNameEl.value.trim() || "미지정_음료") : "미지정_음료";
+                
+                const targetRatioSlider = document.getElementById('target-ratio-slider');
+                const targetRatio = targetRatioSlider ? targetRatioSlider.value : "35";
+                
+                const lossSlider = document.getElementById('loss-slider');
+                const lossRate = lossSlider ? lossSlider.value : "3";
+                
+                // 1. 원재료 데이터 패킹
+                const materials = [];
+                const materialListEl = document.getElementById('material-list');
+                if (materialListEl) {
+                    const materialRows = materialListEl.getElementsByClassName('material-row');
+                    for (let row of materialRows) {
+                        const checkEl = row.querySelector('.material-check');
+                        const nameEl = row.querySelector('.material-name');
+                        const priceEl = row.querySelector('.material-price');
+                        const taxExemptEl = row.querySelector('.material-tax-exempt');
+                        const capacityEl = row.querySelector('.material-capacity');
+                        const densityTypeEl = row.querySelector('.material-unit-density');
+                        const usageEl = row.querySelector('.material-usage');
 
-                    materials.push({ checked, name, price, taxExempt, capacity, densityType, usage });
-                }
-            }
-            
-            const subsidiaries = [];
-            const subsidiaryListEl = document.getElementById('subsidiary-list');
-            if (subsidiaryListEl) {
-                const subRows = subsidiaryListEl.getElementsByClassName('subsidiary-row');
-                for (let row of subRows) {
-                    const isChecked = row.querySelector('.sub-checkbox')?.checked;
-                    if (isChecked) {
-                        const id = row.getAttribute('data-sub-id');
-                        const name = row.querySelector('.sub-custom-name')?.value;
-                        const price = row.querySelector('.sub-price')?.value;
-                        const box = row.querySelector('.sub-box')?.value;
-                        const taxExempt = row.querySelector('.sub-tax-exempt')?.checked;
-                        subsidiaries.push({ id, name, price, box, checked: true, taxExempt });
+                        if (checkEl && nameEl) {
+                            materials.push({
+                                checked: checkEl.checked,
+                                name: nameEl.value,
+                                price: priceEl ? priceEl.value : "",
+                                taxExempt: taxExemptEl ? taxExemptEl.checked : false,
+                                capacity: capacityEl ? capacityEl.value : "1000",
+                                densityType: densityTypeEl ? densityTypeEl.value : "g",
+                                usage: usageEl ? usageEl.value : ""
+                            });
+                        }
                     }
                 }
+                
+                // 2. 부자재 데이터 패킹 (선택된 활성 부자재만 포함, data-sub-id 유실 방지 수동 탑재)
+                const subsidiaries = [];
+                const subsidiaryListEl = document.getElementById('subsidiary-list');
+                if (subsidiaryListEl) {
+                    const subRows = subsidiaryListEl.getElementsByClassName('subsidiary-row');
+                    for (let row of subRows) {
+                        const isChecked = row.querySelector('.sub-checkbox')?.checked;
+                        if (isChecked) {
+                            const id = row.getAttribute('data-sub-id');
+                            const nameEl = row.querySelector('.sub-custom-name');
+                            const priceEl = row.querySelector('.sub-price');
+                            const boxEl = row.querySelector('.sub-box');
+                            const taxExemptEl = row.querySelector('.sub-tax-exempt');
+
+                            subsidiaries.push({
+                                id: id || `sub_custom_${Math.random().toString(36).substr(2, 9)}`,
+                                name: nameEl ? nameEl.value : "",
+                                price: priceEl ? priceEl.value : "",
+                                box: boxEl ? boxEl.value : "",
+                                checked: true,
+                                taxExempt: taxExemptEl ? taxExemptEl.checked : false
+                            });
+                        }
+                    }
+                }
+                
+                const exportPayload = {
+                    version: "1.4",
+                    drinkName,
+                    targetRatio: parseInt(targetRatio),
+                    lossRate: parseInt(lossRate),
+                    materials,
+                    subsidiaries
+                };
+                
+                const jsonString = JSON.stringify(exportPayload, null, 2);
+                
+                // 카카오톡, 네이버 등 보안 엄격 인앱 브라우저 대응 안내 모달
+                const isKakaoTalk = /KAKAOTALK/i.test(navigator.userAgent);
+                const isNaverApp = /NAVER\(inapp/i.test(navigator.userAgent);
+                if (isKakaoTalk || isNaverApp) {
+                    showCustomModal("다운로드 제한 안내", "🚨 카카오톡 또는 네이버 앱 등 인앱 브라우저 내부에서는 보안 정책상 파일 로컬 다운로드가 제한될 수 있습니다.\n\n우측 상단의 점 3개(...) 또는 하단 메뉴 버튼을 클릭하여 '다른 브라우저로 열기(Safari 또는 Chrome)'로 들어오시면 정상적으로 파일을 영구 저장하실 수 있습니다.", "warning");
+                }
+                
+                const blob = new Blob([jsonString], { type: "text/plain;charset=utf-8" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = `${drinkName.replace(/\s+/g, '_')}_원가계산서.txt`;
+                
+                // 💡 해결책: 돔 트리에 잠시 결합하여 안전 다운로드 수행 후 제거 (브라우저 먹통 현상 완전 타파)
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                
+                showCustomModal("저장 완료", `📋 '${drinkName}' 원가 명세서 파일이 안전하게 내려받기 되었습니다. (선택된 부자재만 포함)`, "success");
+            } catch (error) {
+                showCustomModal("저장 실패", "내보내기 파일 생성 도중 에러가 발생했습니다.\n에러 사유: " + error.message, "error");
             }
-            
-            const exportPayload = {
-                version: "1.4",
-                drinkName,
-                targetRatio: parseInt(targetRatio),
-                lossRate: parseInt(lossRate),
-                materials,
-                subsidiaries
-            };
-            
-            const jsonString = JSON.stringify(exportPayload, null, 2);
-            const blob = new Blob([jsonString], { type: "text/plain;charset=utf-8" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `${drinkName.replace(/\s+/g, '_')}_원가계산서.txt`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-            
-            showCustomModal("저장 완료", `📋 '${drinkName}' 원가 명세서 파일이 안전하게 내려받기 되었습니다. (선택된 부자재만 포함)`, "success");
         }
 
         function triggerImport() {
-            document.getElementById('import-file-input').click();
+            const fileInput = document.getElementById('import-file-input');
+            if (fileInput) fileInput.click();
         }
 
         function handleImport(event) {
@@ -874,38 +924,50 @@
                         return;
                     }
                     
-                    document.getElementById('drink-name').value = importedObj.drinkName || "";
-                    document.getElementById('target-ratio-slider').value = importedObj.targetRatio || 35;
-                    document.getElementById('loss-slider').value = importedObj.lossRate || 3;
+                    const drinkNameEl = document.getElementById('drink-name');
+                    if (drinkNameEl) drinkNameEl.value = importedObj.drinkName || "";
                     
+                    const targetRatioSlider = document.getElementById('target-ratio-slider');
+                    if (targetRatioSlider) targetRatioSlider.value = importedObj.targetRatio || 35;
+                    
+                    const lossSlider = document.getElementById('loss-slider');
+                    if (lossSlider) lossSlider.value = importedObj.lossRate || 3;
+                    
+                    // 원재료 리스트 복원
                     const materialContainer = document.getElementById('material-list');
-                    materialContainer.innerHTML = "";
-                    importedObj.materials.forEach(mat => {
-                        addMaterialRow(mat);
-                    });
-                    
-                    const subsidiaryContainer = document.getElementById('subsidiary-list');
-                    subsidiaryContainer.innerHTML = "";
-                    
-                    if (importedObj.subsidiaries && Array.isArray(importedObj.subsidiaries)) {
-                        importedObj.subsidiaries.forEach(sub => {
-                            addCustomSubsidiary(sub);
+                    if (materialContainer) {
+                        materialContainer.innerHTML = "";
+                        importedObj.materials.forEach(mat => {
+                            addMaterialRow(mat);
                         });
                     }
-
-                    defaultSubItems.forEach(item => {
-                        const exists = importedObj.subsidiaries && importedObj.subsidiaries.some(s => s.id === item.id);
-                        if (!exists) {
-                            addCustomSubsidiary({
-                                id: item.id,
-                                name: item.name,
-                                price: item.price,
-                                box: item.box,
-                                checked: false,
-                                taxExempt: item.taxExempt
+                    
+                    // 부자재 리스트 복원
+                    const subsidiaryContainer = document.getElementById('subsidiary-list');
+                    if (subsidiaryContainer) {
+                        subsidiaryContainer.innerHTML = "";
+                        
+                        if (importedObj.subsidiaries && Array.isArray(importedObj.subsidiaries)) {
+                            importedObj.subsidiaries.forEach(sub => {
+                                addCustomSubsidiary(sub);
                             });
                         }
-                    });
+
+                        // 불러오기 파일에 누락된 기존 기본 부자재 항목들을 안전하게 하위 매핑하여 복구 (중복 추가 완전 방지)
+                        defaultSubItems.forEach(item => {
+                            const exists = importedObj.subsidiaries && importedObj.subsidiaries.some(s => s.id === item.id || s.name === item.name);
+                            if (!exists) {
+                                addCustomSubsidiary({
+                                    id: item.id,
+                                    name: item.name,
+                                    price: item.price,
+                                    box: item.box,
+                                    checked: false,
+                                    taxExempt: item.taxExempt
+                                });
+                            }
+                        });
+                    }
                     
                     calculateAll();
                     showCustomModal("데이터 복구 완료", `📂 '${importedObj.drinkName || '불러온 메뉴'}'의 카페 장부 정보가 완벽 복원되었습니다.`, "success");
@@ -922,6 +984,7 @@
         window.onload = function() {
             initSubsidiaries(); 
             
+            // 첫 로딩 시 아메리카노 모크업 데이터 장착
             addMaterialRow({
                 name: "에스프레소 원두",
                 price: "25000",
