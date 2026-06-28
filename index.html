@@ -10,35 +10,17 @@
     <meta name="google-site-verification" content="Qs73gPV3jveEeLMJUeKWVXUaGHRH4-St3N9_XeAuWUE" />
 
     <!-- Tailwind CSS CDN (v4) -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 아이콘 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ================================================================= */
-        /* 🖋️ 상업용 무료 폰트 '페이퍼로지체(Paperlogy)' 1-9단계 수동 매핑 수칙 */
+        /* 🖋️ 상업용 무료 폰트 '페이퍼로지체(Paperlogy)' 3, 5, 7, 9호 경량 매핑 */
         /* ================================================================= */
-        @font-face {
-            font-family: 'PaperlogyY';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-1Thin.woff2') format('woff2');
-            font-weight: 100;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'PaperlogyY';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-2ExtraLight.woff2') format('woff2');
-            font-weight: 200;
-            font-style: normal;
-        }
         @font-face {
             font-family: 'PaperlogyY';
             src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-3Light.woff2') format('woff2');
             font-weight: 300;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'PaperlogyY';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-4Regular.woff2') format('woff2');
-            font-weight: 400;
             font-style: normal;
         }
         @font-face {
@@ -49,20 +31,8 @@
         }
         @font-face {
             font-family: 'PaperlogyY';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-6SemiBold.woff2') format('woff2');
-            font-weight: 600;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'PaperlogyY';
             src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-7Bold.woff2') format('woff2');
             font-weight: 700;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'PaperlogyY';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410@1.0/PaperlogyY-8ExtraBold.woff2') format('woff2');
-            font-weight: 800;
             font-style: normal;
         }
         @font-face {
@@ -72,25 +42,25 @@
             font-style: normal;
         }
 
-        /* 전체 선택자(*) 대신 필수 글자 요소에만 페이퍼로지체를 상속시킵니다. */
+        /* 폰트 4종으로 고유 굵기 제한 적용 (Synthetic Bold 방지) */
         body, input, select, button, textarea, p, span, div, label, h1, h2, h3, h4, h5, h6 {
             font-family: 'PaperlogyY', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* FontAwesome 아이콘 서체가 페이퍼로지체에 강제 덮어씌워지지 않도록 격리 보존합니다. */
+        /* FontAwesome 아이콘 서체 900 굵기 전용 격리 유지 */
         .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands {
             font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
             font-weight: 900 !important; 
         }
 
-        /* 브라우저 강제 굵기 상쇄 후 고유 굵기 지정 */
+        /* 브라우저 강제 굵기 상쇄 후 고유 굵기 700호 지정 */
         strong, b, h1, h2, h3, h4, h5, h6 {
             font-weight: 700;
         }
 
-        /* 크롬 및 사파리 스핀 버튼 숨김 처리로 깔끔한 숫자 패드 입력 유지 */
+        /* 크롬 및 사파리 스핀 버튼 숨김 처리 */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -101,7 +71,7 @@
         }
     </style>
 </head>
-<body class="bg-[#f7f5f0] text-[#3e2723] min-h-screen pb-28 font-[400] antialiased">
+<body class="bg-[#f7f5f0] text-[#3e2723] min-h-screen pb-28 font-[500] antialiased">
 
     <!-- 1. 상단 고정 대시보드 (따뜻한 에스프레소 브라운 톤) -->
     <div class="sticky top-0 bg-[#faf8f5] shadow-sm z-40 border-b border-stone-200">
@@ -110,30 +80,37 @@
                 <h1 class="text-sm font-[900] text-[#5c4033] flex items-center gap-1.5">
                     <span class="text-base text-amber-700">☕</span> 초보 사장님 원가 계산기
                 </h1>
+                <!-- 💡 버전확인용 배너 및 모달 트리거 버튼 배치 -->
+                <button onclick="openVersionModal()" class="text-[10px] font-[700] text-amber-800 bg-amber-50 hover:bg-[#eae3d5] px-2 py-0.5 rounded border border-amber-200/50 cursor-pointer transition">
+                    v0.1.1
+                </button>
             </div>
             
             <!-- 3분할 가로 대시보드 (최종원가 | 목표원가율 | 권장소비자가) -->
             <div class="grid grid-cols-3 gap-1 bg-[#3e2723] text-stone-100 p-2.5 rounded-lg shadow-md text-center">
                 <div class="border-r border-amber-900/30 pr-1">
                     <div class="flex items-center justify-center gap-0.5 mb-0.5">
-                        <span class="text-[9px] text-amber-200/70 font-[400]">최종 원가</span>
+                        <span class="text-[11px] text-amber-200/70 font-[300]">최종 원가</span>
                         <button onclick="toggleTooltip(event, 'tip-loss-rate')" class="text-amber-300/60 text-[9px] cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
                     </div>
-                    <p class="text-sm font-[800] text-[#fcd34d] truncate" id="total-cost-display">0원</p>
+                    <!-- 가독성 향상: 크기를 text-lg(18px)로 키우고 900굵기(Black) 적용 -->
+                    <p class="text-lg font-[900] text-[#fcd34d] truncate" id="total-cost-display">0원</p>
                 </div>
                 <div class="border-r border-amber-900/30 px-1">
                     <div class="flex items-center justify-center gap-0.5 mb-0.5">
-                        <span class="text-[9px] text-amber-200/70 font-[400]">목표 원가율</span>
+                        <span class="text-[11px] text-amber-200/70 font-[300]">목표 원가율</span>
                         <button onclick="toggleTooltip(event, 'tip-target-ratio')" class="text-amber-300/60 text-[9px] cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
                     </div>
-                    <p class="text-sm font-[800] text-[#f59e0b] truncate" id="target-ratio-display">35%</p>
+                    <!-- 가독성 향상: 크기를 text-lg(18px)로 키우고 900굵기(Black) 적용 -->
+                    <p class="text-lg font-[900] text-[#f59e0b] truncate" id="target-ratio-display">35%</p>
                 </div>
                 <div class="pl-1">
                     <div class="flex items-center justify-center gap-0.5 mb-0.5">
-                        <span class="text-[9px] text-amber-200/70 font-[400]">권장 소비자가</span>
+                        <span class="text-[11px] text-amber-200/70 font-[300]">권장 소비자가</span>
                         <button onclick="toggleTooltip(event, 'tip-recommended-price')" class="text-amber-300/60 text-[9px] cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
                     </div>
-                    <p class="text-sm font-[800] text-[#60a5fa] truncate" id="recommended-price-display">0원</p>
+                    <!-- 가독성 향상: 크기를 text-lg(18px)로 키우고 900굵기(Black) 적용 -->
+                    <p class="text-lg font-[900] text-[#60a5fa] truncate" id="recommended-price-display">0원</p>
                 </div>
             </div>
 
@@ -148,35 +125,37 @@
     <!-- 메인 콘텐츠 영역 -->
     <main class="max-w-md mx-auto p-4 space-y-4">
 
-        <!-- 데이터 관리 및 메뉴명 설정 카드 -->
-        <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
-            <div class="space-y-3">
-                <!-- 1. 메뉴명 입력란 -->
-                <div>
-                    <label class="block text-xs font-[800] text-stone-700 mb-1.5 flex items-center gap-1.5">
+        <!-- 💾 메뉴명 및 백업 관리 통합 카드 -->
+        <section class="bg-white p-3 rounded-xl shadow-xs border border-stone-200/80">
+            <div class="grid grid-cols-12 gap-2 items-end">
+                <!-- 1. 메뉴명 입력란 (왼쪽 배치) -->
+                <div class="col-span-7">
+                    <label class="block text-[11px] font-[700] text-[#5c4033] mb-1 select-none">
                         🏷️ 메뉴명 설정
                     </label>
-                    <input type="text" id="drink-name" placeholder="예: 아이스 아메리카노 (16oz)" class="w-full text-xs bg-stone-50 border border-stone-200 rounded-md px-3 py-2 font-[800] text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-800 focus:border-amber-800">
+                    <input type="text" id="drink-name" placeholder="아이스 아메리카노" class="w-full text-xs bg-stone-50 border border-stone-200 rounded-md px-2 py-1.5 font-[700] text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-800 focus:border-amber-800">
                 </div>
 
-                <!-- 필수 세무/회계 비법서 가이드 링크 -->
-                <div class="pt-2 border-t border-dashed border-stone-200">
-                    <button onclick="openAccountingModal()" class="w-full py-2 px-3 bg-[#3e2723] hover:bg-[#4e3629] text-stone-100 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
-                        <span class="text-[#fcd34d] animate-pulse"><i class="fa-solid fa-lightbulb"></i></span>
-                        <span>필수 세무/회계 비법서 가이드 읽기</span>
+                <!-- 2. 저장/불러오기 스마트 버튼 패널 (오른쪽 1줄 가로 인라인 배치) -->
+                <div class="col-span-5 flex gap-1">
+                    <button onclick="exportData()" class="flex-1 py-1.5 bg-amber-50 hover:bg-amber-100 text-[#5c4033] border border-amber-200/85 rounded-md text-[10px] font-[700] transition flex flex-col items-center justify-center gap-0.5 cursor-pointer h-[34px]">
+                        <i class="fa-solid fa-file-export text-[10px]"></i>
+                        <span>저장하기</span>
                     </button>
-                </div>
-
-                <!-- 2. 백업 파일 내보내기/불러오기 버튼 패널 -->
-                <div class="pt-2 border-t border-dashed border-stone-200 flex gap-2">
-                    <button onclick="exportData()" class="flex-1 py-1.5 px-3 bg-amber-50 hover:bg-amber-100 text-[#5c4033] border border-amber-200/80 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-1 cursor-pointer">
-                        <i class="fa-solid fa-file-export"></i> 계산서 내보내기 (.txt)
-                    </button>
-                    <button onclick="triggerImport()" class="flex-1 py-1.5 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-1 cursor-pointer">
-                        <i class="fa-solid fa-file-import"></i> 계산서 불러오기
+                    <button onclick="triggerImport()" class="flex-1 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 rounded-md text-[10px] font-[700] transition flex flex-col items-center justify-center gap-0.5 cursor-pointer h-[34px]">
+                        <i class="fa-solid fa-file-import text-[10px]"></i>
+                        <span>불러오기</span>
                     </button>
                     <input type="file" id="import-file-input" class="hidden" accept=".txt" onchange="handleImport(event)">
                 </div>
+            </div>
+
+            <!-- 필수 세무/회계 비법서 가이드 링크 -->
+            <div class="mt-2.5 pt-2.5 border-t border-dashed border-stone-100">
+                <button onclick="openAccountingModal()" class="w-full py-1.5 px-3 bg-[#3e2723] hover:bg-[#4e3629] text-stone-100 rounded-md text-[11px] font-[700] transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                    <span class="text-[#fcd34d] animate-pulse"><i class="fa-solid fa-lightbulb"></i></span>
+                    <span>필수 세무/회계 비법서 가이드 읽기</span>
+                </button>
             </div>
         </section>
 
@@ -184,7 +163,7 @@
         <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
             <div class="flex justify-between items-center mb-3">
                 <div class="flex items-center gap-1">
-                    <h2 class="text-sm font-[800] text-stone-900">1. 원재료비 입력 (음료용)</h2>
+                    <h2 class="text-sm font-[900] text-stone-900">1. 원재료비 입력 (음료용)</h2>
                     <button onclick="toggleTooltip(event, 'tip-raw-material')" class="text-stone-400 text-xs cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
                 </div>
                 <button onclick="addMaterialRow()" class="text-[11px] font-[700] bg-[#5c4033] text-white px-2.5 py-1.5 rounded-md hover:bg-[#4a3525] transition cursor-pointer">
@@ -202,7 +181,7 @@
         <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
             <div class="flex justify-between items-center mb-3">
                 <div class="flex items-center gap-1">
-                    <h2 class="text-sm font-[800] text-stone-900">2. 부자재비 입력 (테이크아웃 전용)</h2>
+                    <h2 class="text-sm font-[900] text-stone-900">2. 부자재비 입력 (테이크아웃 전용)</h2>
                     <button onclick="toggleTooltip(event, 'tip-subsidiary')" class="text-stone-400 text-xs cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
                 </div>
                 <button onclick="addCustomSubsidiary()" class="text-[11px] font-[700] bg-[#5c4033] text-white px-2.5 py-1.5 rounded-md hover:bg-[#4a3525] transition cursor-pointer">
@@ -220,7 +199,7 @@
         <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-1">
-                    <h2 class="text-sm font-[800] text-stone-900">3. 로스율(Loss) 범위</h2>
+                    <h2 class="text-sm font-[900] text-stone-900">3. 로스율(Loss) 범위</h2>
                     <button onclick="toggleTooltip(event, 'tip-loss-rate-desc')" class="text-slate-400 text-xs cursor-pointer"><i class="fa-solid fa-circle-info"></i></button>
                 </div>
                 <span class="text-xs font-[700] text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200" id="loss-display">3%</span>
@@ -228,14 +207,23 @@
             <input type="range" id="loss-slider" min="0" max="10" value="3" class="w-full h-1.5 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-[#5c4033]" oninput="calculateAll()">
         </section>
 
+        <!-- 📝 4. 레시피 및 계산 메모장 섹션 -->
+        <section class="bg-white p-4 rounded-xl shadow-xs border border-stone-200/80">
+            <h2 class="text-sm font-[900] text-stone-900 mb-2 select-none">
+                4. 메모
+            </h2>
+            <!-- 💡 메모장 높이 최소 3줄 및 안내 Placeholder 정상 노출 설정 완료 -->
+            <textarea id="recipe-memo" rows="3" placeholder="여기에 메모를 입력하세요 (예: 파우더는 뜨거운 물에 완전히 녹인 후 붓기)" class="w-full text-xs bg-stone-50 border border-stone-200 rounded-md px-3 py-2.5 text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-800 focus:border-amber-800 resize-none font-[500] min-h-[80px] overflow-hidden" oninput="autoResizeMemo()"></textarea>
+        </section>
+
         <!-- ✉️ 수정 및 피드백 문의처 영역 (로스율 하단 연계) -->
         <section class="bg-stone-100 p-4 rounded-xl border border-stone-200/60 text-center">
-            <p class="text-[11px] font-[400] text-stone-600 leading-relaxed">
+            <p class="text-[11px] font-[300] text-stone-600 leading-relaxed">
                 원가 계산기 사용 중 기능 수정이나 문의사항이 있으시면<br>
                 아래 이메일로 사장님의 소중한 의견을 편하게 보내주세요!
             </p>
             <div class="mt-2.5">
-                <a href="mailto:noraniuswork@gamil.com" class="inline-flex items-center gap-1.5 text-xs font-[800] text-amber-800 hover:text-amber-900 border-b border-amber-800/40 pb-0.5 hover:border-amber-900 transition">
+                <a href="mailto:noraniuswork@gamil.com" class="inline-flex items-center gap-1.5 text-xs font-[700] text-amber-800 hover:text-amber-900 border-b border-amber-800/40 pb-0.5 hover:border-amber-900 transition">
                     <i class="fa-regular fa-envelope"></i> noraniuswork@gamil.com
                 </a>
             </div>
@@ -243,7 +231,7 @@
 
     </main>
 
-    <!-- 💡 하단 구글 애드센스 홀더 영역 (AD 심벌마크 및 텍스트 문구 전면 제거하여 완전히 공란화 완료) -->
+    <!-- 💡 하단 구글 애드센스 홀더 영역 -->
     <div class="fixed bottom-0 left-0 right-0 bg-[#faf8f5] border-t border-stone-200 h-16 flex items-center justify-center z-50 shadow-md">
         <!-- 
           실사용 구글 애드센스 광고 적용 시 아래 태그 영역 주석을 제거하고 광고 코드를 바인딩하세요.
@@ -261,14 +249,14 @@
             <button onclick="closeTooltip()" class="absolute top-3 right-3 text-stone-400 hover:text-stone-600 cursor-pointer text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h4 class="font-[800] text-[#5c4033] mb-2.5 flex items-center gap-1.5 text-xs border-b border-stone-100 pb-1.5">
+            <h4 class="font-[900] text-[#5c4033] mb-2.5 flex items-center gap-1.5 text-xs border-b border-stone-100 pb-1.5">
                 <i class="fa-solid fa-circle-question text-amber-500"></i> 사장님 도움말
             </h4>
-            <p id="tooltip-text" class="text-[11px] font-[400] text-stone-600 leading-relaxed"></p>
+            <p id="tooltip-text" class="text-[11px] font-[300] text-stone-600 leading-relaxed"></p>
         </div>
     </div>
 
-    <!-- 📖 초보 사장님 필수 비법서 고급 탭 모달창 (AdSense 대체 팝업) -->
+    <!-- 📖 초보 사장님 필수 비법서 고급 탭 모달창 -->
     <div id="accounting-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4 z-50 animate-fade-in" onclick="closeAccountingModal()">
         <div class="bg-white p-5 rounded-2xl max-w-md w-full shadow-2xl relative text-left flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
             <!-- Close button -->
@@ -293,7 +281,7 @@
                 
                 <!-- 탭 1: 면세/과세 원재료 기준 -->
                 <div id="tab-tax" class="tab-content space-y-2.5">
-                    <h4 class="font-[800] text-[#5c4033] text-xs">🥛 면세와 과세 원재료의 세금 기준</h4>
+                    <h4 class="font-[700] text-[#5c4033] text-xs">🥛 면세와 과세 원재료의 세금 기준</h4>
                     <p>우리 매장에 들여오는 식자재 중 가공하지 않은 농·축·수·임산물은 **면세(부가세 0%)**이고, 공장에서 가공했거나 수입 유통된 식품은 **과세(부가세 10% 포함)**입니다.</p>
                     <div class="bg-stone-50 p-2.5 rounded-lg space-y-1.5 border border-stone-200/50">
                         <p class="font-[700] text-amber-800">• 면세 품목 (체크 활성화):</p>
@@ -301,15 +289,15 @@
                         <p class="font-[700] text-amber-800">• 과세 품목 (체크 해제):</p>
                         <p class="pl-2">볶은 원두(홀빈, 분쇄 원두)는 가공식품으로 분류되어 과세(부가세 10% 포함)되니 주의하셔야 합니다.</p>
                     </div>
-                    <p class="text-stone-500">💡 **과세 원재료는 세무 신고 시 부가세를 전액 환급(매입세액공제)** 받으므로, 순수 레시피 단가를 낼 땐 부가세를 제외한 공급가액으로만 합산해야 마진 계산이 틀어지지 않습니다. 본 계산기는 면세 해제 시 공급가로 자동 역산해 계산해줍니다.</p>
+                    <p class="text-stone-500 font-[300]">💡 **과세 원재료는 세무 신고 시 부가세를 전액 환급(매입세액공제)** 받으므로, 순수 레시피 단가를 낼 땐 부가세를 제외한 공급가액으로만 합산해야 마진 계산이 틀어지지 않습니다. 본 계산기는 면세 해제 시 공급가로 자동 역산해 계산해줍니다.</p>
                 </div>
 
                 <!-- 탭 2: ml 부피단위 비중 곱하기 -->
                 <div id="tab-density" class="tab-content hidden space-y-2.5">
-                    <h4 class="font-[800] text-[#5c4033] text-xs">⚖️ 부피(ml) 단위를 무게(g)로 바꿀 때 비중을 타는 이유</h4>
+                    <h4 class="font-[700] text-[#5c4033] text-xs">⚖️ 부피(ml) 단위를 무게(g)로 바꿀 때 비중을 타는 이유</h4>
                     <p>우리가 액체 재료를 살 때는 통상 **ml(부피)** 단위로 사오지만, 매장에서 음료를 조제할 때는 계량 저울에 대고 **g(무게)**으로 펌핑하거나 붓게 됩니다.</p>
                     <p>물은 1ml가 정확히 1g이지만, 시럽이나 소스는 입자가 물보다 조밀하고 무겁기 때문에 1ml가 훨씬 더 많은 무게(g)를 차지합니다.</p>
-                    <div class="bg-amber-50/50 p-2.5 rounded-lg space-y-1 border border-amber-200/30">
+                    <div class="bg-amber-50/50 p-2.5 rounded-lg space-y-1 border border-amber-200/30 font-[500]">
                         <p class="font-[700] text-amber-900">• 우유 비중 (1.03):</p>
                         <p class="pl-2 mb-1">우유 1,000ml는 저울에 달면 약 1,030g입니다.</p>
                         <p class="font-[700] text-amber-900">• 시럽 비중 (1.25):</p>
@@ -317,34 +305,34 @@
                         <p class="font-[700] text-amber-900">• 초코 소스/연유 비중 (1.35):</p>
                         <p class="pl-2">꾸덕한 소스 1,000ml는 실제 무게가 1,350g에 달합니다.</p>
                     </div>
-                    <p class="text-stone-500">🚨 이를 무시하고 단순 1ml=1g으로 매칭하면, 한 잔 제조 시 식자재 소모량이 과소평가되어 사장님도 모르는 사이에 **마진율 펑크**가 발생합니다. 저희 계산기의 비중 보정을 사용하시면 안전합니다.</p>
+                    <p class="text-stone-500 font-[300]">🚨 이를 무시하고 단순 1ml=1g으로 매칭하면, 한 잔 제조 시 식자재 소모량이 과소평가되어 사장님도 모르는 사이에 **마진율 펑크**가 발생합니다. 저희 계산기의 비중 보정을 사용하시면 안전합니다.</p>
                 </div>
 
                 <!-- 탭 3: 캐리어 및 판관비 개념 -->
                 <div id="tab-sga" class="tab-content hidden space-y-2.5">
-                    <h4 class="font-[800] text-[#5c4033] text-xs">🛍️ 종이 쇼핑백, 휴지는 왜 기타원부자재(판관비)로 빼나요?</h4>
+                    <h4 class="font-[700] text-[#5c4033] text-xs">🛍️ 종이 쇼핑백, 휴지는 왜 기타원부자재(판관비)로 빼나요?</h4>
                     <p>원가 회계에는 음료 한 잔을 팔 때 무조건 소모되는 **'직접 매출원가(직접비)'**가 있고, 매장 전반의 운영에 쓰이는 **'판매비와 관리비(간접비/판관비)'**가 있습니다.</p>
                     <div class="bg-stone-50 p-2.5 rounded-lg space-y-1 border border-stone-200/50">
                         <p class="font-[700] text-stone-700">• 테이크아웃 컵, 뚜껑, 빨대, 홀더</p>
                         <p class="pl-2 mb-1.5 text-stone-500">음료가 나갈 때 반드시 1잔당 1개씩 강제 동반되는 물품이므로 '음료 직접원가'에 포함됩니다.</p>
                         <p class="font-[700] text-stone-700">• 캐리어, 냅킨, 물티슈, 트레이 종이매트</p>
-                        <p class="pl-2 text-stone-500">손님의 자율적인 필요나 배달 여부에 따라 사용 개수가 유동적으로 변하므로 한 잔당 원가에 포함시키는 데 무리가 있습니다.</p>
+                        <p class="pl-2 text-stone-500 font-[300]">손님의 자율적인 필요나 배달 여부에 따라 사용 개수가 유동적으로 변하므로 한 잔당 원가에 포함시키는 데 무리가 있습니다.</p>
                     </div>
-                    <p class="text-stone-500">💡 캐리어나 냅킨 같은 비고정 소모품은 음료 잔당 단가에 대입하기보다, 월말 전체 소비 비용을 산출하여 **'판매비와 관리비(판관비)'**의 '소모품비' 항목으로 통합 정산하는 것이 레시피 직접 단가를 명확히 파악하는 비결입니다.</p>
+                    <p class="text-stone-500 font-[300]">💡 캐리어나 냅킨 같은 비고정 소모품은 음료 잔당 단가에 대입하기보다, 월말 전체 소비 비용을 산출하여 **'판매비와 관리비(판관비)'**의 '소모품비' 항목으로 통합 정산하는 것이 레시피 직접 단가를 명확히 파악하는 비결입니다.</p>
                 </div>
 
                 <!-- 탭 4: 초보 사장님 실무 FAQ -->
                 <div id="tab-faq" class="tab-content hidden space-y-3">
-                    <h4 class="font-[800] text-[#5c4033] text-xs">💬 카페 사장님들이 자주 묻는 원가 질문 FAQ</h4>
+                    <h4 class="font-[700] text-[#5c4033] text-xs">💬 카페 사장님들이 자주 묻는 원가 질문 FAQ</h4>
                     
                     <div class="space-y-1">
                         <p class="font-[700] text-amber-800">Q. 카페 평균 목표 원가율은 얼마가 베스트인가요?</p>
-                        <p class="text-stone-600 pl-2">A. 테이크아웃 전용점은 **30% ~ 33%**, 홀 비중이 큰 곳은 **25% ~ 30%** 선을 목표 원가율로 권장합니다. 원부자재 가격이 40%를 넘어서면 임대료와 인건비를 제외하고 손에 쥐는 마진이 극도로 희박해집니다.</p>
+                        <p class="text-stone-600 pl-2 font-[300]">A. 테이크아웃 전용점은 **30% ~ 33%**, 홀 비중이 큰 곳은 **25% ~ 30%** 선을 목표 원가율로 권장합니다. 원부자재 가격이 40%를 넘어서면 임대료와 인건비를 제외하고 손에 쥐는 마진이 극도로 희박해집니다.</p>
                     </div>
                     
                     <div class="space-y-1 border-t border-stone-100 pt-2">
                         <p class="font-[700] text-amber-800">Q. 로스율은 왜 꼭 3% 가산해야 하나요?</p>
-                        <p class="text-stone-600 pl-2">A. 시럽 펌프 호스 끝에 남아 버려지는 한 방울, 우유 스팀 후 피처 바닥에 남은 우유 잔량, 원두 그라인더 날에 끼여 유실되는 커피 가루 등은 계량 저울에 나타나지 않는 보이지 않는 손실입니다. 이 손실분이 누적되면 마진 오류가 나기 때문에 3% 수준의 버퍼를 가산해 계산하는 것이 필수적입니다.</p>
+                        <p class="text-stone-600 pl-2 font-[300]">A. 시럽 펌프 호스 끝에 남아 버려지는 한 방울, 우유 스팀 후 피처 바닥에 남은 우유 잔량, 원두 그라인더 날에 끼여 유실되는 커피 가루 등은 계량 저울에 나타나지 않는 보이지 않는 손실입니다. 이 손실분이 누적되면 마진 오류가 나기 때문에 3% 수준의 버퍼를 가산해 계산하는 것이 필수적입니다.</p>
                     </div>
                 </div>
 
@@ -359,14 +347,45 @@
         </div>
     </div>
 
+    <!-- 🏷️ 버전 정보 및 업데이트 로그 모달창 -->
+    <div id="version-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-6 z-50" onclick="closeVersionModal()">
+        <div class="bg-white p-5 rounded-2xl max-w-xs w-full shadow-2xl relative text-left" onclick="event.stopPropagation()">
+            <button onclick="closeVersionModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 cursor-pointer text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h4 class="font-[900] text-[#5c4033] text-sm mb-3 border-b border-stone-100 pb-2.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-code-branch text-amber-700"></i> 계산기 업데이트 정보
+            </h4>
+            <div class="space-y-3 text-xs font-[500] text-stone-600 max-h-[50vh] overflow-y-auto">
+                <div class="space-y-1">
+                    <p class="font-[900] text-stone-800 flex items-center gap-1">
+                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-600"></span> v0.1.1 (최신 버전)
+                    </p>
+                    <p class="pl-2.5 text-stone-500 leading-relaxed font-[300]">
+                        • 4. 메모장 높이 3줄 확장 및 반응형 개선<br>
+                        • 파일 저장/불러오기(인코딩) 안정성 최적화
+                    </p>
+                </div>
+                <div class="space-y-1 border-t border-stone-100 pt-2.5">
+                    <p class="font-[900] text-stone-400 flex items-center gap-1">
+                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-stone-300"></span> v0.1.0
+                    </p>
+                    <p class="pl-2.5 text-stone-400 leading-relaxed font-[300]">
+                        • 초보 사장님을 위한 계산기 최초 신규 출시
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 커스텀 알림/안전 모달창 -->
     <div id="custom-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-6 z-50" onclick="closeCustomModal()">
         <div class="bg-white p-5 rounded-xl max-w-xs w-full shadow-2xl relative text-center" onclick="event.stopPropagation()">
             <div id="modal-icon" class="text-3xl text-emerald-500 mb-2">
                 <i class="fa-regular fa-circle-check"></i>
             </div>
-            <h4 id="modal-title" class="font-[800] text-stone-900 text-sm mb-1.5">안내</h4>
-            <p id="modal-message" class="text-xs font-[400] text-stone-600 leading-relaxed whitespace-pre-line mb-4"></p>
+            <h4 id="modal-title" class="font-[900] text-[#3e2723] text-sm mb-1.5">안내</h4>
+            <p id="modal-message" class="text-xs font-[300] text-stone-600 leading-relaxed whitespace-pre-line mb-4"></p>
             <button onclick="closeCustomModal()" class="w-full py-1.5 bg-[#5c4033] hover:bg-[#4a3525] text-white rounded-md text-xs font-[700] transition cursor-pointer">확인</button>
         </div>
     </div>
@@ -401,6 +420,7 @@
             modal.classList.add('flex');
         }
 
+        // 도움말 닫기
         function closeTooltip() {
             const modal = document.getElementById('global-tooltip');
             if (modal) {
@@ -423,6 +443,32 @@
             if (modal) {
                 modal.classList.remove('flex');
                 modal.classList.add('hidden');
+            }
+        }
+
+        // 버전 정보 모달 제어
+        function openVersionModal() {
+            const modal = document.getElementById('version-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeVersionModal() {
+            const modal = document.getElementById('version-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
+        // 💡 해결책 1 (모달 닫기 복구): 커스텀 안내 모달을 닫는 자바스크립트 함수 추가
+        function closeCustomModal() {
+            const modal = document.getElementById('custom-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
             }
         }
 
@@ -467,6 +513,17 @@
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+        }
+
+        // 메모 높이 자동조절
+        function autoResizeMemo() {
+            const memoEl = document.getElementById('recipe-memo');
+            if (memoEl) {
+                memoEl.style.height = 'auto';
+                // 최하 3줄 높이(96px)를 보존하기 위해 scrollHeight와 기본 min-height 중 더 큰 값으로 유연하게 조절
+                const targetHeight = Math.max(96, memoEl.scrollHeight);
+                memoEl.style.height = targetHeight + 'px';
+            }
         }
 
         // ==========================================
@@ -517,9 +574,9 @@
                 <!-- 2행: 구매용량 | 중량/부비 비중 선택기 | 레시피당 사용량 | 한줄원가 -->
                 <div class="flex items-center justify-between gap-1.5 pt-1.5 border-t border-dashed border-stone-200/80 text-[10px]">
                     <div class="flex items-center gap-1 shrink-0">
-                        <span class="text-stone-400">용량</span>
+                        <span class="text-stone-400 font-[300]">용량</span>
                         <input type="number" value="${capacity}" class="material-capacity w-12 text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-amber-800" oninput="calculateAll()">
-                        <select class="material-unit-density text-[10px] bg-stone-100 border border-stone-300 rounded px-1 py-0.5 cursor-pointer text-stone-600 font-[400]" onchange="calculateAll()">
+                        <select class="material-unit-density text-[10px] bg-stone-100 border border-stone-300 rounded px-1 py-0.5 cursor-pointer text-stone-600 font-[500]" onchange="calculateAll()">
                             <option value="g" ${densityType === 'g' ? 'selected' : ''}>g (무게 기준)</option>
                             <option value="ml_water" ${densityType === 'ml_water' ? 'selected' : ''}>ml (물 비중 1.0)</option>
                             <option value="ml_milk" ${densityType === 'ml_milk' ? 'selected' : ''}>ml (우유 비중 1.03)</option>
@@ -528,12 +585,12 @@
                         </select>
                     </div>
                     <div class="flex items-center gap-1 shrink-0">
-                        <span class="text-stone-400">레시피</span>
+                        <span class="text-stone-400 font-[300]">레시피</span>
                         <input type="number" placeholder="0" value="${usage}" class="material-usage w-10 text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-amber-800" oninput="calculateAll()">
                         <span class="text-stone-500 font-[700]">g</span>
                     </div>
                     <div class="text-[11px] font-[500] text-stone-500 shrink-0">
-                        원가: <span class="row-cost text-stone-900 font-[800]">0</span>원
+                        원가: <span class="row-cost text-stone-900 font-[700]">0</span>원
                     </div>
                 </div>
             `;
@@ -589,7 +646,7 @@
                     <input type="number" value="${box}" class="sub-box w-9 text-[10px] text-right bg-white border border-stone-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-[#5c4033]" oninput="calculateSubUnit(${subsidiaryCount})">
                     <span class="text-[9px] text-stone-400 shrink-0">개</span>
                     <span class="text-[9px] text-stone-400 shrink-0">=</span>
-                    <span class="text-[11px] font-[800] text-stone-700 min-w-[24px] text-right shrink-0"><span class="sub-unit-display">0</span>원</span>
+                    <span class="text-[11px] font-[700] text-stone-700 min-w-[24px] text-right shrink-0"><span class="sub-unit-display">0</span>원</span>
                     
                     <button onclick="removeSubsidiaryRow(${subsidiaryCount})" class="text-stone-400 hover:text-rose-500 transition cursor-pointer text-xs shrink-0 pl-1">
                         <i class="fa-solid fa-trash-can"></i>
@@ -637,14 +694,6 @@
             const unitCost = price / box;
             displaySpan.innerText = Math.round(unitCost);
             calculateAll();
-        }
-
-        function closeCustomModal() {
-            const modal = document.getElementById('custom-modal');
-            if (modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
         }
 
         // 부자재 기본목록 최초 렌더링용 빌더
@@ -812,6 +861,9 @@
                 
                 const lossSlider = document.getElementById('loss-slider');
                 const lossRate = lossSlider ? lossSlider.value : "3";
+
+                const memoEl = document.getElementById('recipe-memo');
+                const memoValue = memoEl ? memoEl.value : "";
                 
                 // 1. 원재료 데이터 패킹
                 const materials = [];
@@ -868,10 +920,11 @@
                 }
                 
                 const exportPayload = {
-                    version: "1.4",
+                    version: "1.5", 
                     drinkName,
                     targetRatio: parseInt(targetRatio),
                     lossRate: parseInt(lossRate),
+                    memo: memoValue,
                     materials,
                     subsidiaries
                 };
@@ -885,18 +938,24 @@
                     showCustomModal("다운로드 제한 안내", "🚨 카카오톡 또는 네이버 앱 등 인앱 브라우저 내부에서는 보안 정책상 파일 로컬 다운로드가 제한될 수 있습니다.\n\n우측 상단의 점 3개(...) 또는 하단 메뉴 버튼을 클릭하여 '다른 브라우저로 열기(Safari 또는 Chrome)'로 들어오시면 정상적으로 파일을 영구 저장하실 수 있습니다.", "warning");
                 }
                 
-                const blob = new Blob([jsonString], { type: "text/plain;charset=utf-8" });
+                // BOM 주입을 통한 한글 깨짐 완전 해결
+                const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                const textBytes = new TextEncoder().encode(jsonString);
+                const blobContent = new Uint8Array(bom.length + textBytes.length);
+                blobContent.set(bom, 0);
+                blobContent.set(textBytes, bom.length);
+
+                const blob = new Blob([blobContent], { type: "text/plain;charset=utf-8" });
                 const link = document.createElement("a");
                 link.href = URL.createObjectURL(blob);
                 link.download = `${drinkName.replace(/\s+/g, '_')}_원가계산서.txt`;
                 
-                // 💡 해결책: 돔 트리에 잠시 결합하여 안전 다운로드 수행 후 제거 (브라우저 먹통 현상 완전 타파)
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
                 URL.revokeObjectURL(link.href);
                 
-                showCustomModal("저장 완료", `📋 '${drinkName}' 원가 명세서 파일이 안전하게 내려받기 되었습니다. (선택된 부자재만 포함)`, "success");
+                showCustomModal("저장 완료", `📋 '${drinkName}' 원가 명세서 파일이 안전하게 내려받기 되었습니다. (선택된 부자재 및 조제 메모 포함)`, "success");
             } catch (error) {
                 showCustomModal("저장 실패", "내보내기 파일 생성 도중 에러가 발생했습니다.\n에러 사유: " + error.message, "error");
             }
@@ -929,6 +988,12 @@
                     
                     const lossSlider = document.getElementById('loss-slider');
                     if (lossSlider) lossSlider.value = importedObj.lossRate || 3;
+
+                    const memoEl = document.getElementById('recipe-memo');
+                    if (memoEl) {
+                        memoEl.value = importedObj.memo || "";
+                        autoResizeMemo();
+                    }
                     
                     // 원재료 리스트 복원
                     const materialContainer = document.getElementById('material-list');
@@ -950,7 +1015,6 @@
                             });
                         }
 
-                        // 불러오기 파일에 누락된 기존 기본 부자재 항목들을 안전하게 하위 매핑하여 복구 (중복 추가 완전 방지)
                         defaultSubItems.forEach(item => {
                             const exists = importedObj.subsidiaries && importedObj.subsidiaries.some(s => s.id === item.id || s.name === item.name);
                             if (!exists) {
@@ -992,6 +1056,13 @@
                 taxExempt: false 
             });
             
+            // 메모 자동 높이 조절 연결
+            const memoEl = document.getElementById('recipe-memo');
+            if (memoEl) {
+                memoEl.addEventListener('input', autoResizeMemo);
+                autoResizeMemo(); // 초기 빈칸 리셋
+            }
+
             document.body.addEventListener('click', function() {
                 closeTooltip();
             });
